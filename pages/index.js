@@ -1,7 +1,17 @@
 function Home() {
   return (
     <>
-      <div style={{ display: "grid", justifyItems: "center" }}>
+      <div
+        style={{
+          display: "grid",
+          justifyItems: "center",
+          backgroundImage: `url("https://c4.wallpaperflare.com/wallpaper/906/1/261/holiday-valentine-s-day-couple-heart-love-hd-wallpaper-preview.jpg")`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          height: "100vh",
+          WebkitBackdropFilter: "revert",
+        }}
+      >
         <h1 style={{ textAlign: "center" }}>
           Oi Juu, eu te amo demais. Tu é o amor da minha vida toda! ❤️❤️❤️
         </h1>
