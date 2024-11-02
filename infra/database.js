@@ -9,10 +9,15 @@ async function query(pedido) {
     database: process.env.POSTGRES_DB,
   });
   await client.connect();
-  const res = await client.query(pedido);
-  await client.end();
 
-  return res;
+  try {
+    const res = await client.query(pedido);
+    return res;
+  } catch (err) {
+    console.error(err);
+  } finally {
+    await client.end();
+  }
 }
 
 export default {
