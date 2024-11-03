@@ -2,8 +2,6 @@ test("Get should be 200 on api/v1/status", async () => {
   // Verifica se a aplicação está viva
   const response = await fetch("http://localhost:3000/api/v1/status");
   expect(response.status).toBe(200);
-
-  const responseBody = await response.json();
 });
 
 test("Verify updated_at valid format", async () => {
