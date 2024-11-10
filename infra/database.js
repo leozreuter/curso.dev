@@ -7,6 +7,7 @@ async function query(pedido) {
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
+    sll: getSSLValue(),
   });
 
   console.log({
@@ -32,3 +33,12 @@ async function query(pedido) {
 export default {
   query: query,
 };
+
+function getSSLValue() {
+  if (process.env.POSTGRES_CA) {
+    return {
+      ca: process.env.POSTGRES_CA,
+    };
+  }
+  return process.env.NODE_ENV === "development" ? false : true;
+}
