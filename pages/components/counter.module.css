@@ -1,3 +1,13 @@
+@keyframes blinkEffect {
+  0% {
+    background-color: #ffd0d0; /* Cor inicial */
+  }
+  100% {
+    background-image: none;
+    background-color: white; /* Cor inicial */
+  }
+}
+
 .counter {
   display: flex;
   flex-direction: column;
@@ -7,6 +17,10 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
+}
+
+.blink {
+  animation: blinkEffect 0.5s ease-in-out; /* Duração e suavização da animação */
 }
 
 .counter-number {

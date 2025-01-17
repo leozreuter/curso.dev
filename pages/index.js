@@ -26,12 +26,12 @@ function Home() {
           alt="teste..."
         ></iframe>
         <div className="camporee">
-          <h1>Tempo até a JUU voltar do Camporee</h1>
+          <h1>Tempo até a Jujuba voltar do Camporee 🏕️</h1>
           <div className="counter-box">
-            <Counter title="Dias" number={day}/> 
-            <Counter title="Horas" number={hour}/> 
-            <Counter title="Minutos" number={minute}/> 
-            <Counter title="Segundos" number={second}/> 
+            <Counter className="counter" title="Dias" number={day}/> 
+            <Counter className="counter" title="Horas" number={hour}/> 
+            <Counter className="counter" title="Minutos" number={minute}/> 
+            <Counter className="counter" title="Segundos" number={second}/> 
           </div>
         </div>
       </div>
