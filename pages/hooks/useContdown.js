@@ -1,37 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function useContdown (date) {
+export default function useCountdown(targetDate, onComplete) {
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
-    const [day, setDay] = useState();
-    const [hour, setHour] = useState();
-    const [minute, setMinute] = useState();
-    const [second, setSecond] = useState();
-
-    
-    const contdown = () => {
-        const countDate = new Date(date).getTime();
-        const now = new Date().getTime();
-
-
-        const interval = countDate-now;
-
-        const second = 1000;
-        const minute = second * 60;
-        const hour = minute * 60;
-        const day = hour * 24;
-
-        const dayNumber = Math.floor(interval / day);
-        const hourNumber = Math.floor((interval % day) / hour);
-        const minuteNumber = Math.floor((interval % hour) / minute);
-        const secondNumber = Math.floor((interval % minute) / second);
-
-        setDay(dayNumber)
-        setHour(hourNumber)
-        setMinute(minuteNumber)
-        setSecond(secondNumber)
+  function calculateTimeLeft() {
+    const difference = new Date(targetDate).getTime() - new Date().getTime();
+    if (difference <= 0) {
+      if (onComplete) onComplete(); // Dispara o callback ao zerar
+      return [0, 0, 0, 0];
     }
 
-    setInterval(contdown, 1000)
+    const day = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hour = Math.floor((difference / (1000 * 60 * 60)) % 24);
+    const minute = Math.floor((difference / 1000 / 60) % 60);
+    const second = Math.floor((difference / 1000) % 60);
 
-    return [day, hour, minute, second]
+    return [day, hour, minute, second];
+  }
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [targetDate]);
+
+  return timeLeft;
 }
