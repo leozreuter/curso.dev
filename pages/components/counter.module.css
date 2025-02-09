@@ -1,0 +1,41 @@
+@keyframes blinkEffect {
+  0% {
+    background-color: #ffd0d0; /* Cor inicial */
+  }
+  100% {
+    background-image: none;
+    background-color: white; /* Cor inicial */
+  }
+}
+
+.counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.blink {
+  animation: blinkEffect 0.5s ease-in-out; /* Duração e suavização da animação */
+}
+
+.counter-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.counter-title {
+  font-size: 16px;
+  color: #666;
+}
+
+@media (min-width: 700px) {
+  .counter {
+    width: 100%;
+  }
+}

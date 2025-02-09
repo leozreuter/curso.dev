@@ -1,0 +1,109 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  display: grid;
+  justify-items: center;
+  background-image: url(https://c4.wallpaperflare.com/wallpaper/906/1/261/holiday-valentine-s-day-couple-heart-love-hd-wallpaper-preview.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.BlurClass {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255 255 255 0);
+  backdrop-filter: blur(3px);
+}
+
+iframe {
+  border: none;
+  height: 40vh;
+  width: 50vh;
+  z-index: 1;
+  border-radius: 50px;
+}
+
+.counter-box {
+  display: flex;
+  align-items: center;
+  gap: 1vh;
+  width: 75vw;
+  margin: 5vh;
+  padding: 15px;
+  background-color: #f9f9f946;
+  border-radius: 8px;
+
+  & h6 {
+    font-size: 18px;
+    font-family: Monospace;
+    font-style: Monaco;
+    background-color: white;
+    border-radius: 8px;
+    padding: 5px;
+  }
+}
+
+.counter {
+  animation-name: pisca;
+  animation-duration: 10s;
+  height: 50px;
+  min-width: 50px;
+}
+
+.titulo {
+  text-align: center;
+  z-index: 1;
+  height: 30px;
+  font-size: 4vh;
+}
+
+@keyframes pisca {
+  from {
+    background-color: black;
+  }
+  to {
+    background-color: #f9f9f9;
+  }
+}
+
+@media (max-width: 700px) {
+  .App {
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: visible;
+    gap: 1vh;
+    padding: 5px;
+    height: auto;
+  }
+  iframe {
+    height: 20vh;
+    width: 20vh;
+  }
+  .titulo {
+    text-align: center;
+    height: 5vh;
+    font-size: 2.7vh;
+  }
+  .counter-box {
+    flex-direction: column;
+    align-content: center;
+    height: auto;
+    margin-top: 10px;
+  }
+  .counter_counter__tlons {
+    min-width: 50vw;
+  }
+  h6 {
+    margin: 0;
+  }
+}
