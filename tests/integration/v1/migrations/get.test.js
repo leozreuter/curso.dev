@@ -1,10 +1,10 @@
 import database from "infra/database.js";
+import orchestrator from "tests/orchestrator.js";
 
-beforeAll(cleanDatabase);
-
-async function cleanDatabase() {
+beforeAll(async () => {
+  await orchestrator.waitForAllServices();
   await database.query("DROP Schema public cascade; create schema public;");
-}
+});
 
 test("GET should be 200 on api/v1/migrations", async () => {
   // Verifica se a aplicação está viva
@@ -12,7 +12,7 @@ test("GET should be 200 on api/v1/migrations", async () => {
   expect(response.status).toBe(200);
 
   const responseBody = await response.json();
-
+  //Se ta respondendo um array...
   expect(Array.isArray(responseBody)).toBe(true);
   expect(responseBody.length).toBeGreaterThan(0);
 });
