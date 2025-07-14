@@ -7,10 +7,12 @@ async function query(pedido) {
     const res = await client.query(pedido);
     return res;
   } catch (err) {
+    console.log("\nErro no database.js:\n");
     console.error(err);
+    console.log("\n\n");
     throw err;
   } finally {
-    await client.end();
+    await client?.end();
   }
 }
 
