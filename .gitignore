@@ -1,4 +1,3 @@
 .next/
 node_modules/
-models/
 tests/unit/calc.test.js
