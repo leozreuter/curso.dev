@@ -6,7 +6,7 @@ const deafultMigrationsOptions = {
   dir: resolve("infra", "migrations"),
   dryRun: false,
   direction: "up",
-  verbose: true,
+  log: () => {},
   migrationsTable: "pgmigrations",
 };
 
