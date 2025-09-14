@@ -79,7 +79,7 @@ describe("POST api/v1/users", () => {
       expect(responseBodyDuplicated).toEqual({
         name: "ValidationError",
         message: "O email informado já está em uso.",
-        action: "Utilize outro email para realizar o cadastro.",
+        action: "Utilize outro email para realizar esta operação.",
         status_code: 400,
       });
       expect(response2.status).toBe(400); // HTTP 400 = Erorr
@@ -112,7 +112,7 @@ describe("POST api/v1/users", () => {
       expect(responseBodyDuplicated).toEqual({
         name: "ValidationError",
         message: "O username informado já está em uso.",
-        action: "Utilize outro username para realizar o cadastro.",
+        action: "Utilize outro username para realizar esta operação.",
         status_code: 400,
       });
       expect(response2.status).toBe(400); // HTTP 400 = Error
