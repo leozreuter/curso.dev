@@ -26,11 +26,11 @@ describe("GET api/v1/users/[username]", () => {
         email: "lreuter@curso.dev",
         password: responseBody.password,
         created_at: responseBody.created_at,
-        update_at: responseBody.update_at,
+        updated_at: responseBody.updated_at,
       });
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
-      expect(Date.parse(responseBody.update_at)).not.toBeNaN();
+      expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
 
       expect(response.status).toBe(200);
     });
@@ -46,11 +46,11 @@ describe("GET api/v1/users/[username]", () => {
         email: "lreuter@curso.dev",
         password: responseBody.password,
         created_at: responseBody.created_at,
-        update_at: responseBody.update_at,
+        updated_at: responseBody.updated_at,
       });
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
-      expect(Date.parse(responseBody.update_at)).not.toBeNaN();
+      expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
 
       expect(response.status).toBe(200); // HTTP 400 = Error
     });
@@ -60,7 +60,7 @@ describe("GET api/v1/users/[username]", () => {
       const responseBody = await response.json();
       expect(responseBody).toEqual({
         name: "NotFoundError",
-        message: "O username informado não foi encontrado no sistemas.",
+        message: "O username informado não foi encontrado no sistema.",
         action: "Verifique se o username informado está digitado corretamente.",
         status_code: 404,
       });
