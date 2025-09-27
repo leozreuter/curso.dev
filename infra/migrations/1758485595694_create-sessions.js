@@ -1,25 +1,23 @@
 exports.up = (pgm) => {
-  pgm.createTable("users", {
+  pgm.createTable("sessions", {
     id: {
       type: "uuid",
       primaryKey: true,
       default: pgm.func("gen_random_uuid()"),
     },
-    username: {
-      // For reference, GitHub limit username to 39 characters
-      type: "varchar(30)",
+    token: {
+      type: "varchar(96)",
       notNull: true,
       unique: true,
     },
-    email: {
-      // Why 254 length? https://stackoverflow.com/a/1199238
-      type: "varchar(254)",
+    user_id: {
+      type: "uuid",
       notNull: true,
-      unique: true,
+      //references: "users" //users.id
     },
-    password: {
-      // Why 60 lenght? https://www.npmjs.com/package/bcrypt#hash-info
-      type: "varchar(60)",
+    // Why timestampt tz? https://justatheory.com/2012/04/postgres-use-timestamptz/
+    expires_at: {
+      type: "timestamptz",
       notNull: true,
     },
     created_at: {
@@ -28,7 +26,6 @@ exports.up = (pgm) => {
       default: pgm.func("timezone('utc', now())"),
     },
     updated_at: {
-      // Why timestampt tz? https://justatheory.com/2012/04/postgres-use-timestamptz/
       type: "timestamptz",
       notNull: true,
       default: pgm.func("timezone('utc', now())"),

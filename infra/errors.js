@@ -32,6 +32,24 @@ export class MethodNotAllowedError extends Error {
     };
   }
 }
+
+export class UnathorizedError extends Error {
+  constructor({ cause, message, action }) {
+    super(message || "Usuário não autenticado", { cause });
+    this.name = "UnathorizedError";
+    this.action =
+      action || "Verifique as credenciais fornecidas e tente novamente.";
+    this.statusCode = 401;
+  }
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      action: this.action,
+      status_code: this.statusCode,
+    };
+  }
+}
 export class ServicesError extends Error {
   constructor({ cause, message }) {
     super(message || "Serviço indisponível no momento", { cause });
@@ -64,7 +82,6 @@ export class ValidationError extends Error {
     };
   }
 }
-
 export class NotFoundError extends Error {
   constructor({ cause, message, action }) {
     super(message || "Um erro de validação ocorreu", { cause });
