@@ -60,7 +60,7 @@ async function update(currentUser, userInputValues) {
           username = $2,
           email = $3,
           password = $4,
-          update_at = timezone('utc', now())
+          updated_at = timezone('utc', now())
         WHERE
           id = $1
         RETURNING

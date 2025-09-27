@@ -20,7 +20,7 @@ describe("GET api/v1/status", () => {
       expect(responseBody.updated_at).toEqual(parsedDateNow);
 
       //Verify database integrity
-      //Verifica se o database está sendo preenchido
+      // //Verifica se o database está sendo preenchido
       expect(responseBody.dependecies.database.version).toEqual("16.0");
       expect(responseBody.dependecies.database.max_connections).toEqual(100);
       expect(responseBody.dependecies.database.opend_connections).toEqual(1);

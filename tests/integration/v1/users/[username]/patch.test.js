@@ -121,12 +121,12 @@ describe("GET api/v1/users/[username]", () => {
         email: userCreated.email,
         password: responseBody.password,
         created_at: responseBody.created_at,
-        update_at: responseBody.update_at,
+        updated_at: responseBody.updated_at,
       });
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
-      expect(Date.parse(responseBody.update_at)).not.toBeNaN();
-      expect(responseBody.update_at > responseBody.created_at).toBe(true);
+      expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
+      expect(responseBody.updated_at > responseBody.created_at).toBe(true);
     });
 
     test("With unique 'email'", async () => {
@@ -153,12 +153,12 @@ describe("GET api/v1/users/[username]", () => {
         email: "uniqueEmail2@curso.dev",
         password: responseBody.password,
         created_at: responseBody.created_at,
-        update_at: responseBody.update_at,
+        updated_at: responseBody.updated_at,
       });
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
-      expect(Date.parse(responseBody.update_at)).not.toBeNaN();
-      expect(responseBody.update_at > responseBody.created_at).toBe(true);
+      expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
+      expect(responseBody.updated_at > responseBody.created_at).toBe(true);
     });
 
     test("Update 'password'", async () => {
@@ -184,12 +184,12 @@ describe("GET api/v1/users/[username]", () => {
         email: userCreated.email,
         password: responseBody.password,
         created_at: responseBody.created_at,
-        update_at: responseBody.update_at,
+        updated_at: responseBody.updated_at,
       });
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
-      expect(Date.parse(responseBody.update_at)).not.toBeNaN();
-      expect(responseBody.update_at > responseBody.created_at).toBe(true);
+      expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
+      expect(responseBody.updated_at > responseBody.created_at).toBe(true);
 
       const userInDatabase = await user.findOneByUsername(userCreated.username);
       const correctPassword = await password.compare(
