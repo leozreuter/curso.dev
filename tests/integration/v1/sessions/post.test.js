@@ -9,7 +9,7 @@ beforeAll(async () => {
   await orchestrator.runPendingMigrations();
 });
 
-describe("POST api/v1/users", () => {
+describe("POST api/v1/sessions", () => {
   describe("Anonymous user", () => {
     let userCreated;
     test("With incorrect `email` but correct `password`", async () => {
