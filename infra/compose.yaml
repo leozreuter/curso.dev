@@ -6,3 +6,9 @@ services:
       - ../.env.development
     ports:
       - "1234:5432"
+  mailcatcher:
+    container_name: "mailcatcher"
+    image: "axllent/mailpit:latest"
+    ports:
+      - "1080:8025"
+      - "1025:1025"
