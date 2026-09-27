@@ -76,7 +76,10 @@ async function getLastEmail() {
     method: "GET",
   });
   const emailListBody = await emailListRespose.json();
-  const lastEmailItem = emailListBody.messages.shift();
+  const lastEmailItem = await emailListBody.messages.shift();
+  if (!lastEmailItem) {
+    return null;
+  }
   const lastEmail = await fetch(
     `${emailHttpUrl}/api/v1/message/${lastEmailItem.ID}`,
   );
