@@ -4,4 +4,4 @@ exports.up = (pgm) => {
   });
 };
 
-exports.down = (pgm) => false;
+exports.down = () => false;
