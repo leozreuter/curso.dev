@@ -3,16 +3,19 @@ import controller from "infra/controller.js";
 import activation from "models/activation.js";
 
 const router = createRouter();
-router.patch(patchHandler);
+router.use(controller.injectAnonymousOrUser);
+router.patch(controller.canRequest("read:activation_token"), patchHandler);
 
 export default router.handler(controller.errorsHandler);
 
 async function patchHandler(request, response) {
   const activationTokenId = request.query.token_id;
 
-  const usedActivationToken =
-    await activation.markTokenAsUsed(activationTokenId);
-  await activation.activateUserByUserId(usedActivationToken.user_id);
+  const validTokenId = await activation.findOneValidById(activationTokenId);
+
+  await activation.activateUserByUserId(validTokenId.user_id);
+
+  const usedActivationToken = await activation.markTokenAsUsed(validTokenId.id);
 
   return response.status(200).json(usedActivationToken);
 }
