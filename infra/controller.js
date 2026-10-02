@@ -62,7 +62,7 @@ async function clearSessionCookie(response) {
 }
 
 async function injectAnonymousOrUser(request, response, next) {
-  if (request.cookie?.session_id) {
+  if (request.cookies?.session_id) {
     await injectAuthenticatedUser(request);
     return next();
   }
@@ -72,7 +72,7 @@ async function injectAnonymousOrUser(request, response, next) {
 }
 
 async function injectAuthenticatedUser(request) {
-  const sessionToken = request.cookie.session_id;
+  const sessionToken = request.cookies.session_id;
   const sessionObject = await session.findOneValidByToken(sessionToken);
   const userObject = await user.findOneById(sessionObject.user_id);
 
@@ -100,8 +100,8 @@ function canRequest(feature) {
     }
 
     throw new ForbidenError({
-      message: "Você não possui permissão para essa ação",
-      action: `Verifique se o seu usuário possui a feature "${feature}"`,
+      message: "Você não possui permissão para essa ação.",
+      action: `Verifique se o seu usuário possui a feature "${feature}".`,
     });
   };
 }
