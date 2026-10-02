@@ -4,7 +4,8 @@ import session from "models/session";
 import user from "models/user";
 
 const router = createRouter();
-router.get(getHandler);
+router.use(controller.injectAnonymousOrUser);
+router.get(controller.canRequest("read:session"), getHandler);
 
 export default router.handler(controller.errorsHandler);
 
