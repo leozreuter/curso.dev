@@ -1,6 +1,7 @@
-import orchestrator from "tests/orchestrator.js";
 import { version as uuidVersion } from "uuid";
 
+import orchestrator from "tests/orchestrator.js";
+import webserver from "infra/webserver";
 import user from "models/user.js";
 import password from "models/password.js";
 
@@ -117,6 +118,33 @@ describe("POST api/v1/users", () => {
         status_code: 400,
       });
       expect(response2.status).toBe(400); // HTTP 400 = Error
+    });
+  });
+
+  describe("Default user", () => {
+    test("Logged user trying to create another user", async () => {
+      const createdUser = await orchestrator.createUser();
+      await orchestrator.activateUser(createdUser);
+      const sessionObject = await orchestrator.createSession(createdUser.id);
+
+      const resp = await fetch(`${webserver.origin}/api/v1/users`, {
+        method: "POST",
+        body: JSON.stringify({
+          username: "lreuter",
+          email: "lreuter@curso.dev",
+          password: "teste",
+        }),
+        headers: { Cookie: `session_id=${sessionObject.token}` },
+      });
+
+      expect(resp.status).toBe(403);
+      const respBody = await resp.json();
+      expect(respBody).toEqual({
+        name: "ForbidenError",
+        message: "Você não possui permissão para essa ação.",
+        action: `Verifique se o seu usuário possui a feature "create:user".`,
+        status_code: 403,
+      });
     });
   });
 });
