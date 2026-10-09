@@ -1,14 +1,48 @@
 import orchestrator from "tests/orchestrator.js";
+import user from "models/user";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
+  await orchestrator.clearDatabase();
+  await orchestrator.runPendingMigrations();
 });
 
 describe("GET api/v1/status", () => {
-  describe("Anonymous user", () => {
+  describe("Anonymous and default user", () => {
     test("Retrieving current system status", async () => {
       // Verifica se a aplicação está viva
       const response = await fetch("http://localhost:3000/api/v1/status");
+      const responseBody = await response.json();
+      expect(response.status).toBe(200);
+
+      //Verifica se o update_at está sendo preenchido
+      expect(responseBody.updated_at).toBeDefined();
+      //Verifica a fundo se o valor informado na chave update_at é realmente válido
+      //Converte a entrada para ISO novamente, se a entrada for diferente de uma data válida o teste quebra
+      const parsedDateNow = new Date(responseBody.updated_at).toISOString();
+      expect(responseBody.updated_at).toEqual(parsedDateNow);
+
+      //Verify database integrity
+      // //Verifica se o database está sendo preenchido
+      expect(responseBody.dependecies.database.max_connections).toEqual(100);
+      expect(responseBody.dependecies.database.opend_connections).toEqual(1);
+    });
+  });
+  describe("Privilege user", () => {
+    test("Retrieving current system status with version", async () => {
+      const privilegeCreatedUser = await orchestrator.createUser();
+      await orchestrator.activateUser(privilegeCreatedUser);
+      await user.addFeatures(privilegeCreatedUser.id, [
+        "read:status:privilege",
+      ]);
+      const privilegeSessionObject = await orchestrator.createSession(
+        privilegeCreatedUser.id,
+      );
+
+      // Verifica se a aplicação está viva
+      const response = await fetch("http://localhost:3000/api/v1/status", {
+        headers: { Cookie: `session_id=${privilegeSessionObject.token}` },
+      });
       const responseBody = await response.json();
       expect(response.status).toBe(200);
 
