@@ -30,8 +30,6 @@ describe("POST api/v1/users", () => {
       expect(responseBody).toEqual({
         id: responseBody.id,
         username: "lreuter",
-        email: "lreuter@curso.dev",
-        password: responseBody.password,
         features: ["read:activation_token"],
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
@@ -64,6 +62,14 @@ describe("POST api/v1/users", () => {
           password: "qa_passwd",
         }),
       });
+      const responseBody1 = await response1.json();
+      expect(responseBody1).toEqual({
+        id: responseBody1.id,
+        username: "emailduplicado1",
+        features: ["read:activation_token"],
+        created_at: responseBody1.created_at,
+        updated_at: responseBody1.updated_at,
+      });
       expect(response1.status).toBe(201); // HTTP 201 = Created
 
       const response2 = await fetch("http://localhost:3000/api/v1/users", {
@@ -84,7 +90,7 @@ describe("POST api/v1/users", () => {
         action: "Utilize outro email para realizar esta operação.",
         status_code: 400,
       });
-      expect(response2.status).toBe(400); // HTTP 400 = Erorr
+      expect(response2.status).toBe(400);
     });
 
     test("With duplicated 'username'", async () => {
