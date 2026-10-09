@@ -234,6 +234,10 @@ async function setFeatures(userId, features) {
   }
 }
 
+/**
+ * @param {string} userId = ""
+ * @param {array[string]} features = [""]
+ **/
 async function addFeatures(userId, features) {
   const updatedUser = await runUpdateQuery(userId, features);
   return updatedUser;
