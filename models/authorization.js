@@ -64,9 +64,19 @@ function filterOutput(user, feature, resource) {
         },
       },
     };
-    if (user.features.includes("read:status:privilege")) {
+    if (can(user, "read:status:all")) {
       output.dependecies.database.version = db.version;
     }
+  }
+
+  if (feature === "read:migration") {
+    output = resource.map((migration) => {
+      return {
+        path: migration.path,
+        name: migration.name,
+        timestamp: migration.timestamp,
+      };
+    });
   }
 
   delete output.password;

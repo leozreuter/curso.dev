@@ -26,15 +26,14 @@ describe("GET api/v1/status", () => {
       // //Verifica se o database está sendo preenchido
       expect(responseBody.dependecies.database.max_connections).toEqual(100);
       expect(responseBody.dependecies.database.opend_connections).toEqual(1);
+      expect(responseBody.dependecies.database).not.toHaveProperty("version");
     });
   });
   describe("Privilege user", () => {
     test("Retrieving current system status with version", async () => {
       const privilegeCreatedUser = await orchestrator.createUser();
       await orchestrator.activateUser(privilegeCreatedUser);
-      await user.addFeatures(privilegeCreatedUser.id, [
-        "read:status:privilege",
-      ]);
+      await user.addFeatures(privilegeCreatedUser.id, ["read:status:all"]);
       const privilegeSessionObject = await orchestrator.createSession(
         privilegeCreatedUser.id,
       );
