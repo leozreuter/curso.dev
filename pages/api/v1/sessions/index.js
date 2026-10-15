@@ -2,10 +2,15 @@ import { createRouter } from "next-connect";
 
 import controller from "infra/controller.js";
 import authentication from "models/authentication.js";
+import authorization from "models/authorization.js";
 import session from "models/session.js";
 
+import { ForbidenError } from "infra/errors.js";
+
 const router = createRouter();
-router.post(postHandler);
+
+router.use(controller.injectAnonymousOrUser);
+router.post(controller.canRequest("create:session"), postHandler);
 router.delete(deleteHandler);
 
 export default router.handler(controller.errorsHandler);
@@ -18,11 +23,23 @@ async function postHandler(request, response) {
     userInputValues.password,
   );
 
-  const newSessionToken = await session.create(authenticatedUser.id);
+  if (!authorization.can(authenticatedUser, "create:session")) {
+    throw new ForbidenError({
+      message: "Você não possiu permissão para fazer login.",
+      action: "Contate o suporte caso você acredite que isso seja um erro.",
+    });
+  }
 
+  const newSessionToken = await session.create(authenticatedUser.id);
   controller.setSessionCookie(newSessionToken.token, response);
 
-  return response.status(201).json(newSessionToken);
+  const secureOutputValues = authorization.filterOutput(
+    authenticatedUser,
+    "read:session",
+    newSessionToken,
+  );
+
+  return response.status(201).json(secureOutputValues);
 }
 
 async function deleteHandler(request, response) {
@@ -33,5 +50,11 @@ async function deleteHandler(request, response) {
 
   controller.clearSessionCookie(response);
 
-  return response.status(200).json(expiredSessionObject);
+  const secureOutputValues = authorization.filterOutput(
+    request.context.user,
+    "read:session",
+    expiredSessionObject,
+  );
+
+  return response.status(200).json(secureOutputValues);
 }
