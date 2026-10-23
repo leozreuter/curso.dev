@@ -1,5 +1,7 @@
 import orchestrator from "tests/orchestrator.js";
 import session from "models/session.js";
+import webserver from "infra/webserver.js";
+
 import setCookieParser from "set-cookie-parser";
 
 beforeAll(async () => {
@@ -14,7 +16,7 @@ describe("GET api/v1/user", () => {
       const createdUser = await orchestrator.createUser({
         username: "ValidSession",
       });
-
+      const activatedUser = await orchestrator.activateUser(createdUser);
       const sessionObject = await orchestrator.createSession(createdUser.id);
 
       const response = await fetch("http://localhost:3000/api/v1/user", {
@@ -29,9 +31,9 @@ describe("GET api/v1/user", () => {
         id: createdUser.id,
         username: "ValidSession",
         email: createdUser.email,
-        password: createdUser.password,
+        features: ["create:session", "read:session", "update:user"],
         created_at: createdUser.created_at.toISOString(),
-        updated_at: createdUser.updated_at.toISOString(),
+        updated_at: activatedUser.updated_at.toISOString(),
       });
 
       // Renew session asserts
@@ -114,6 +116,7 @@ describe("GET api/v1/user", () => {
       const createdUser = await orchestrator.createUser({
         username: "HalfTimeUser",
       });
+      const activatedUser = await orchestrator.activateUser(createdUser);
       const sessionObject = await orchestrator.createSession(createdUser.id);
 
       jest.useRealTimers();
@@ -136,9 +139,9 @@ describe("GET api/v1/user", () => {
         id: createdUser.id,
         username: "HalfTimeUser",
         email: createdUser.email,
-        password: createdUser.password,
+        features: ["create:session", "read:session", "update:user"],
         created_at: createdUser.created_at.toISOString(),
-        updated_at: createdUser.updated_at.toISOString(),
+        updated_at: activatedUser.updated_at.toISOString(),
       });
 
       // Renew session asserts
@@ -164,6 +167,20 @@ describe("GET api/v1/user", () => {
         path: "/",
         maxAge: session.EXPIRATION_IN_MILLISECONDS / 1000,
         httpOnly: true,
+      });
+    });
+  });
+
+  describe("Anonymous user", () => {
+    test("Retriving the endpoint", async () => {
+      const response = await fetch(`${webserver.origin}/api/v1/user`);
+      expect(response.status).toBe(403);
+      const respBody = await response.json();
+      expect(respBody).toEqual({
+        name: "ForbidenError",
+        message: "Você não possui permissão para essa ação.",
+        action: `Verifique se o seu usuário possui a feature "read:session".`,
+        status_code: 403,
       });
     });
   });
