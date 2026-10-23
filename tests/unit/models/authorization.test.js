@@ -10,23 +10,23 @@ describe("models/authorization.js", () => {
       }).toThrow(InternalServerError);
     });
 
-    test("Without `user.features`", () => {
-      const createdUser = orchestrator.createUser();
+    test("Without `user.features`", async () => {
+      const createdUser = await orchestrator.createUser();
       expect(() => {
         authorization.can(createdUser);
       }).toThrow(InternalServerError);
     });
 
-    test("With `unknown feature`", () => {
-      let createdUser = orchestrator.createUser();
+    test("With `unknown feature`", async () => {
+      let createdUser = await orchestrator.createUser();
       createdUser.features = [];
       expect(() => {
         authorization.can(createdUser, "unknown:feature");
       }).toThrow(InternalServerError);
     });
 
-    test("With `valid user` and `known feature`", () => {
-      let createdUser = orchestrator.createUser();
+    test("With `valid user` and `known feature`", async () => {
+      let createdUser = await orchestrator.createUser();
       createdUser.features = ["read:user"];
       expect(authorization.can(createdUser, "read:user")).toBe(true);
     });
@@ -39,31 +39,31 @@ describe("models/authorization.js", () => {
       }).toThrow(InternalServerError);
     });
 
-    test("Without `user.features`", () => {
-      const createdUser = orchestrator.createUser();
+    test("Without `user.features`", async () => {
+      const createdUser = await orchestrator.createUser();
       expect(() => {
         authorization.filterOutput(createdUser);
       }).toThrow(InternalServerError);
     });
 
-    test("With `unknown feature`", () => {
-      let createdUser = orchestrator.createUser();
+    test("With `unknown feature`", async () => {
+      let createdUser = await orchestrator.createUser();
       createdUser.features = [];
       expect(() => {
         authorization.filterOutput(createdUser, "unknown:feature");
       }).toThrow(InternalServerError);
     });
 
-    test("With `valid user`, `known feature` but `no resouce`", () => {
-      let createdUser = orchestrator.createUser();
+    test("With `valid user`, `known feature` but `no resouce`", async () => {
+      let createdUser = await orchestrator.createUser();
       createdUser.features = ["read:user"];
       expect(() => {
         authorization.filterOutput(createdUser, "read:user");
       }).toThrow(InternalServerError);
     });
 
-    test("With `valid user`, `known feature` and `resouce`", () => {
-      let createdUser = orchestrator.createUser();
+    test("With `valid user`, `known feature` and `resouce`", async () => {
+      let createdUser = await orchestrator.createUser();
       createdUser.features = ["read:user"];
       const resource = {
         id: 1,

@@ -8,7 +8,7 @@ async function create(userInputValues) {
   await hashPasswordInObject(userInputValues);
   injectDefaultFeaturesInObject(userInputValues);
 
-  const newUser = runInsertQuery(userInputValues);
+  const newUser = await runInsertQuery(userInputValues);
   return newUser;
 
   async function runInsertQuery(userInputValues) {
