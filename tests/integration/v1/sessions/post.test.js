@@ -13,10 +13,12 @@ describe("POST api/v1/sessions", () => {
   describe("Anonymous user", () => {
     let userCreated;
     test("With incorrect `email` but correct `password`", async () => {
-      userCreated = await orchestrator.createUser({
+      const inactivatedUser = await orchestrator.createUser({
         email: "correct.email@curso.dev",
         password: "correct-password",
       });
+
+      userCreated = await orchestrator.activateUser(inactivatedUser);
 
       const response = await fetch("http://localhost:3000/api/v1/sessions", {
         method: "POST",
