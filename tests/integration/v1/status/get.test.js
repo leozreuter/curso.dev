@@ -9,10 +9,38 @@ beforeAll(async () => {
 });
 
 describe("GET api/v1/status", () => {
-  describe("Anonymous and default user", () => {
+  describe("Anonymous user", () => {
     test("Retrieving current system status", async () => {
       // Verifica se a aplicação está viva
       const response = await fetch(`${webserver.origin}/api/v1/status`);
+      const responseBody = await response.json();
+      expect(response.status).toBe(200);
+
+      //Verifica se o update_at está sendo preenchido
+      expect(responseBody.updated_at).toBeDefined();
+      //Verifica a fundo se o valor informado na chave update_at é realmente válido
+      //Converte a entrada para ISO novamente, se a entrada for diferente de uma data válida o teste quebra
+      const parsedDateNow = new Date(responseBody.updated_at).toISOString();
+      expect(responseBody.updated_at).toEqual(parsedDateNow);
+
+      //Verify database integrity
+      // //Verifica se o database está sendo preenchido
+      expect(responseBody.dependecies.database.max_connections).toEqual(100);
+      expect(responseBody.dependecies.database.opend_connections).toEqual(1);
+      expect(responseBody.dependecies.database).not.toHaveProperty("version");
+    });
+  });
+  describe("Default user", () => {
+    test("Retrieving current system status", async () => {
+      const defaultUser = await orchestrator.createUser();
+      await orchestrator.activateUser(defaultUser);
+      const defaultUserSessionObject =
+        await orchestrator.createSession(defaultUser);
+
+      // Verifica se a aplicação está viva
+      const response = await fetch(`${webserver.origin}/api/v1/status`, {
+        headers: { Cookie: `session_id=${defaultUserSessionObject.token}` },
+      });
       const responseBody = await response.json();
       expect(response.status).toBe(200);
 
