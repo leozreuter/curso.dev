@@ -34,7 +34,7 @@ describe("POST api/v1/migrations", () => {
         const createdUser = await orchestrator.createUser();
         await orchestrator.activateUser(createdUser);
         await user.addFeatures(createdUser.id, ["create:migration"]);
-        sessionObject = await orchestrator.createSession(createdUser.id);
+        sessionObject = await orchestrator.createSession(createdUser);
         const response1 = await fetch(`${webserver.origin}/api/v1/migrations`, {
           method: "POST",
           headers: { Cookie: `session_id=${sessionObject.token}` },

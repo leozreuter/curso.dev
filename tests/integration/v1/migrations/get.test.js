@@ -29,9 +29,8 @@ describe("GET api/v1/migrations", () => {
       const privilegeCreatedUser = await orchestrator.createUser();
       await orchestrator.activateUser(privilegeCreatedUser);
       await user.addFeatures(privilegeCreatedUser.id, ["read:migration"]);
-      const privilegeSessionObject = await orchestrator.createSession(
-        privilegeCreatedUser.id,
-      );
+      const privilegeSessionObject =
+        await orchestrator.createSession(privilegeCreatedUser);
 
       const response = await fetch(`${webserver.origin}/api/v1/migrations`, {
         headers: { Cookie: `session_id=${privilegeSessionObject.token}` },

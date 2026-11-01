@@ -35,9 +35,8 @@ describe("GET api/v1/status", () => {
       const privilegeCreatedUser = await orchestrator.createUser();
       await orchestrator.activateUser(privilegeCreatedUser);
       await user.addFeatures(privilegeCreatedUser.id, ["read:status:all"]);
-      const privilegeSessionObject = await orchestrator.createSession(
-        privilegeCreatedUser.id,
-      );
+      const privilegeSessionObject =
+        await orchestrator.createSession(privilegeCreatedUser);
 
       // Verifica se a aplicação está viva
       const response = await fetch(`${webserver.origin}/api/v1/status`, {
