@@ -4,12 +4,11 @@ import user from "models/user.js";
 import authorization from "models/authorization.js";
 import { ForbidenError } from "infra/errors.js";
 
-const router = createRouter();
-router.use(controller.injectAnonymousOrUser);
-router.get(getHandler);
-router.patch(controller.canRequest("update:user"), patchHandler);
-
-export default router.handler(controller.errorsHandler);
+export default createRouter()
+  .use(controller.injectAnonymousOrUser)
+  .get(getHandler)
+  .patch(controller.canRequest("update:user"), patchHandler)
+  .handler(controller.errorsHandler);
 
 async function getHandler(request, response) {
   const username = request.query.username;
