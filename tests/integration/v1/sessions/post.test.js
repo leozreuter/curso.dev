@@ -108,10 +108,24 @@ describe("POST api/v1/sessions", () => {
       const expiresAt = new Date(responseBody.expires_at);
       const createdAt = new Date(responseBody.created_at);
 
-      expiresAt.setMilliseconds(0);
-      createdAt.setMilliseconds(0);
+      //* `expires_at` é calculado na aplicação antes da persistência.
+      //* `created_at` é calculado depois na camada do banco de dados.
 
-      expect(expiresAt - createdAt).toEqual(session.EXPIRATION_IN_MILLISECONDS);
+      //* Por isso, o tempo real entre as duas datas pode ficar ligeiramente
+      // menor do que o tempo de expiração configurado e não bater 30 dias nos
+      // milissegundos caso seja calculado apenas `expires_at` - `created_at`.
+
+      //* Então a ideia é garantir que no momento `expires_at` seja maior que
+      // `created_at`, e também que possa existir distância de até 5 segundos
+      // entre as duas datas para cobrir o caso do banco sofrer algum load
+      // inesperado nos testes.
+      expect(expiresAt >= createdAt).toBe(true);
+
+      const actualLifetimeInMilliseconds = expiresAt - createdAt;
+      const lifetimeDifferenceInMilliseconds =
+        session.EXPIRATION_IN_MILLISECONDS - actualLifetimeInMilliseconds;
+
+      expect(lifetimeDifferenceInMilliseconds).toBeLessThanOrEqual(5000);
 
       const parsedSetCookie = setCookieParser(response, {
         map: true,
