@@ -1,4 +1,5 @@
 import orchestrator from "tests/orchestrator.js";
+import webserver from "infra/webserver.js";
 import { version as uuidVersion } from "uuid";
 
 beforeAll(async () => {
@@ -15,9 +16,7 @@ describe("GET api/v1/users/[username]", () => {
         email: "lreuter@curso.dev",
       });
 
-      const response = await fetch(
-        "http://localhost:3000/api/v1/users/lreuter",
-      );
+      const response = await fetch(`${webserver.origin}/api/v1/users/lreuter`);
       const responseBody = await response.json();
 
       expect(responseBody).toEqual({
@@ -35,9 +34,7 @@ describe("GET api/v1/users/[username]", () => {
     });
 
     test("With mismatch case", async () => {
-      const response = await fetch(
-        "http://localhost:3000/api/v1/users/Lreuter",
-      );
+      const response = await fetch(`${webserver.origin}/api/v1/users/Lreuter`);
       const responseBody = await response.json();
       expect(responseBody).toEqual({
         id: responseBody.id,
@@ -54,7 +51,7 @@ describe("GET api/v1/users/[username]", () => {
     });
 
     test("With nonexist user case", async () => {
-      const response = await fetch("http://localhost:3000/api/v1/users/test");
+      const response = await fetch(`${webserver.origin}/api/v1/users/test`);
       const responseBody = await response.json();
       expect(responseBody).toEqual({
         name: "NotFoundError",

@@ -1,5 +1,6 @@
 import orchestrator from "tests/orchestrator.js";
 //import database from "infra/database.js";
+import webserver from "infra/webserver.js";
 import user from "models/user";
 
 beforeAll(async () => {
@@ -11,7 +12,7 @@ beforeAll(async () => {
 describe("POST api/v1/migrations", () => {
   describe("Anonymous user", () => {
     test("Trying to run pendings migrations", async () => {
-      const response = await fetch("http://localhost:3000/api/v1/migrations", {
+      const response = await fetch(`${webserver.origin}/api/v1/migrations`, {
         method: "POST",
       });
 
@@ -34,13 +35,10 @@ describe("POST api/v1/migrations", () => {
         await orchestrator.activateUser(createdUser);
         await user.addFeatures(createdUser.id, ["create:migration"]);
         sessionObject = await orchestrator.createSession(createdUser.id);
-        const response1 = await fetch(
-          "http://localhost:3000/api/v1/migrations",
-          {
-            method: "POST",
-            headers: { Cookie: `session_id=${sessionObject.token}` },
-          },
-        );
+        const response1 = await fetch(`${webserver.origin}/api/v1/migrations`, {
+          method: "POST",
+          headers: { Cookie: `session_id=${sessionObject.token}` },
+        });
 
         const response1Body = await response1.json();
         expect(Array.isArray(response1Body)).toBe(true);
@@ -51,7 +49,7 @@ describe("POST api/v1/migrations", () => {
       // test("For the second time", async () => {
       //   //Verifica se o segundo POST não quebra os testes
       //   const response2 = await fetch(
-      //     "http://localhost:3000/api/v1/migrations",
+      //     `${webserver.origin}/api/v1/migrations`,
       //     {
       //       method: "POST",
       //       headers: { Cookie: `session_id=${sessionObject.token}` },

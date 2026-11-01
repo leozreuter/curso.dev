@@ -1,4 +1,5 @@
 import orchestrator from "tests/orchestrator.js";
+import webserver from "infra/webserver.js";
 import user from "models/user";
 
 beforeAll(async () => {
@@ -11,7 +12,7 @@ describe("GET api/v1/status", () => {
   describe("Anonymous and default user", () => {
     test("Retrieving current system status", async () => {
       // Verifica se a aplicação está viva
-      const response = await fetch("http://localhost:3000/api/v1/status");
+      const response = await fetch(`${webserver.origin}/api/v1/status`);
       const responseBody = await response.json();
       expect(response.status).toBe(200);
 
@@ -39,7 +40,7 @@ describe("GET api/v1/status", () => {
       );
 
       // Verifica se a aplicação está viva
-      const response = await fetch("http://localhost:3000/api/v1/status", {
+      const response = await fetch(`${webserver.origin}/api/v1/status`, {
         headers: { Cookie: `session_id=${privilegeSessionObject.token}` },
       });
       const responseBody = await response.json();

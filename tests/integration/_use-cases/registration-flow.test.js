@@ -16,7 +16,7 @@ describe("Use case: User registration flow: (all succesfull)", () => {
   let sessionResponseBody;
   test("Create user account", async () => {
     const createdUserResponse = await fetch(
-      "http://localhost:3000/api/v1/users",
+      `${webserver.origin}/api/v1/users`,
       {
         method: "POST",
         headers: { "Content-type": "application/json" },
@@ -89,7 +89,7 @@ describe("Use case: User registration flow: (all succesfull)", () => {
     expect(sessionResponseBody.user_id).toEqual(createdUser.id);
   });
   test("Get user", async () => {
-    const response = await fetch("http://localhost:3000/api/v1/user", {
+    const response = await fetch(`${webserver.origin}/api/v1/user`, {
       method: "GET",
       headers: { Cookie: `session_id=${sessionResponseBody.token}` },
     });

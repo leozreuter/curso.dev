@@ -1,5 +1,6 @@
 import orchestrator from "tests/orchestrator.js";
 //import database from "infra/database.js";
+import webserver from "infra/webserver.js";
 import user from "models/user";
 
 beforeAll(async () => {
@@ -11,7 +12,7 @@ beforeAll(async () => {
 describe("GET api/v1/migrations", () => {
   describe("Anonymous and default user", () => {
     test("Running pending migrations", async () => {
-      const response = await fetch("http://localhost:3000/api/v1/migrations");
+      const response = await fetch(`${webserver.origin}/api/v1/migrations`);
 
       const responseBody = await response.json();
       expect(responseBody).toEqual({
@@ -32,7 +33,7 @@ describe("GET api/v1/migrations", () => {
         privilegeCreatedUser.id,
       );
 
-      const response = await fetch("http://localhost:3000/api/v1/migrations", {
+      const response = await fetch(`${webserver.origin}/api/v1/migrations`, {
         headers: { Cookie: `session_id=${privilegeSessionObject.token}` },
       });
       const responseBody = await response.json();
