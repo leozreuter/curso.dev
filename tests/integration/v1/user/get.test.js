@@ -17,9 +17,9 @@ describe("GET api/v1/user", () => {
         username: "ValidSession",
       });
       const activatedUser = await orchestrator.activateUser(createdUser);
-      const sessionObject = await orchestrator.createSession(createdUser.id);
+      const sessionObject = await orchestrator.createSession(createdUser);
 
-      const response = await fetch("http://localhost:3000/api/v1/user", {
+      const response = await fetch(`${webserver.origin}/api/v1/user`, {
         method: "GET",
         headers: { Cookie: `session_id=${sessionObject.token}` },
       });
@@ -59,11 +59,12 @@ describe("GET api/v1/user", () => {
         path: "/",
         maxAge: session.EXPIRATION_IN_MILLISECONDS / 1000,
         httpOnly: true,
+        sameSite: "Lax",
       });
     });
 
     test("with nonexistent session", async () => {
-      const response = await fetch("http://localhost:3000/api/v1/user", {
+      const response = await fetch(`${webserver.origin}/api/v1/user`, {
         method: "GET",
         headers: { Cookie: `session_id=sessaoInexistente` },
       });
@@ -87,11 +88,11 @@ describe("GET api/v1/user", () => {
       const createdUser = await orchestrator.createUser({
         username: "ExpiredSession",
       });
-      const sessionObject = await orchestrator.createSession(createdUser.id);
+      const sessionObject = await orchestrator.createSession(createdUser);
 
       jest.useRealTimers();
 
-      const response = await fetch("http://localhost:3000/api/v1/user", {
+      const response = await fetch(`${webserver.origin}/api/v1/user`, {
         headers: {
           Cookie: `session_id=${sessionObject.token}`,
         },
@@ -117,11 +118,11 @@ describe("GET api/v1/user", () => {
         username: "HalfTimeUser",
       });
       const activatedUser = await orchestrator.activateUser(createdUser);
-      const sessionObject = await orchestrator.createSession(createdUser.id);
+      const sessionObject = await orchestrator.createSession(createdUser);
 
       jest.useRealTimers();
 
-      const response = await fetch("http://localhost:3000/api/v1/user", {
+      const response = await fetch(`${webserver.origin}/api/v1/user`, {
         method: "GET",
         headers: { Cookie: `session_id=${sessionObject.token}` },
       });
@@ -167,6 +168,7 @@ describe("GET api/v1/user", () => {
         path: "/",
         maxAge: session.EXPIRATION_IN_MILLISECONDS / 1000,
         httpOnly: true,
+        sameSite: "Lax",
       });
     });
   });

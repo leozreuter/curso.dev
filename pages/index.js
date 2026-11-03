@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
 import Head from "next/head";
 import Counter from "./components/counter.js";
 import useCountdown from "./hooks/useCount.js";
+import { useSyncExternalStore } from "react";
 
 function Home() {
-  const [isClient, setIsClient] = useState(false);
+  const isClient = useSyncExternalStore(
+    () => () => {},
+    () => true, // no cliente
+    () => false, // no servidor
+  );
   const countdown = useCountdown("Feb 04, 2024 16:00:00");
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   // Se ainda estiver no servidor, mostrar valores padrão para evitar erro de hidratação
   const [years, mouth, day, hour, minute, second] = isClient

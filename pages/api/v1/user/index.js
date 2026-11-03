@@ -4,11 +4,10 @@ import authorization from "models/authorization";
 import session from "models/session";
 import user from "models/user";
 
-const router = createRouter();
-router.use(controller.injectAnonymousOrUser);
-router.get(controller.canRequest("read:session"), getHandler);
-
-export default router.handler(controller.errorsHandler);
+export default createRouter()
+  .use(controller.injectAnonymousOrUser)
+  .get(controller.canRequest("read:session"), getHandler)
+  .handler(controller.errorsHandler);
 
 async function getHandler(request, response) {
   const token = request.cookies.session_id;

@@ -1,3 +1,4 @@
+import webserver from "infra/webserver.js";
 import orchestrator from "tests/orchestrator.js";
 
 beforeAll(async () => {
@@ -8,7 +9,7 @@ describe("POST api/v1/status", () => {
   describe("Anonymous user", () => {
     test("Returning method not allowed error", async () => {
       // Verifica se a aplicação está viva
-      const response = await fetch("http://localhost:3000/api/v1/status", {
+      const response = await fetch(`${webserver.origin}/api/v1/status`, {
         method: "POST",
       });
       const responseBody = await response.json();

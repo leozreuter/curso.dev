@@ -13,7 +13,7 @@ beforeAll(async () => {
 
 describe("PATCH api/v1/users/[username]", () => {
   describe("Anonymous user", () => {
-    test("With a existent 'username'", async () => {
+    test("With a existent `username`", async () => {
       await orchestrator.createUser({ username: "user1" });
 
       const response = await fetch(`${webserver.origin}/api/v1/users/user1`, {
@@ -39,7 +39,7 @@ describe("PATCH api/v1/users/[username]", () => {
     test("With user1 targeting user2", async () => {
       const createdUser = await orchestrator.createUser();
       await orchestrator.activateUser(createdUser);
-      const sessionObject1 = await orchestrator.createSession(createdUser.id);
+      const sessionObject1 = await orchestrator.createSession(createdUser);
 
       const createdsUser2 = await orchestrator.createUser();
 
@@ -69,10 +69,10 @@ describe("PATCH api/v1/users/[username]", () => {
       });
     });
 
-    test("With a nonexistent 'username'", async () => {
+    test("With a nonexistent `username`", async () => {
       const createdUser = await orchestrator.createUser();
       await orchestrator.activateUser(createdUser);
-      const sessionObject = await orchestrator.createSession(createdUser.id);
+      const sessionObject = await orchestrator.createSession(createdUser);
 
       const response = await fetch(
         `${webserver.origin}/api/v1/users/nonExistentUsername`,
@@ -99,10 +99,10 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(response.status).toBe(404); // HTTP 400 = Error
     });
 
-    test("With duplicated 'username'", async () => {
+    test("With duplicated `username`", async () => {
       const createdUser = await orchestrator.createUser();
       await orchestrator.activateUser(createdUser);
-      const sessionObject = await orchestrator.createSession(createdUser.id);
+      const sessionObject = await orchestrator.createSession(createdUser);
 
       await orchestrator.createUser({
         username: "Username2",
@@ -133,10 +133,10 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(response.status).toBe(400);
     });
 
-    test("With duplicated 'email'", async () => {
+    test("With duplicated `email`", async () => {
       const createdUser = await orchestrator.createUser();
       await orchestrator.activateUser(createdUser);
-      const sessionObject = await orchestrator.createSession(createdUser.id);
+      const sessionObject = await orchestrator.createSession(createdUser);
 
       await orchestrator.createUser({
         email: "Email2@curso.dev",
@@ -167,10 +167,10 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(response.status).toBe(400); // HTTP 400 = Error
     });
 
-    test("With unique 'username'", async () => {
+    test("With unique `username`", async () => {
       const createdUser = await orchestrator.createUser();
       await orchestrator.activateUser(createdUser);
-      const sessionObject = await orchestrator.createSession(createdUser.id);
+      const sessionObject = await orchestrator.createSession(createdUser);
 
       const response = await fetch(
         `${webserver.origin}/api/v1/users/${createdUser.username}`,
@@ -206,7 +206,7 @@ describe("PATCH api/v1/users/[username]", () => {
     test("With unique 'email'", async () => {
       const createdUser = await orchestrator.createUser();
       await orchestrator.activateUser(createdUser);
-      const sessionObject = await orchestrator.createSession(createdUser.id);
+      const sessionObject = await orchestrator.createSession(createdUser);
 
       const response = await fetch(
         `${webserver.origin}/api/v1/users/${createdUser.username}`,
@@ -237,12 +237,15 @@ describe("PATCH api/v1/users/[username]", () => {
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
+
+      const userInDatabase = await user.findOneByUsername(createdUser.username);
+      expect(userInDatabase.email).toBe("uniqueEmail2@curso.dev");
     });
 
-    test("Update 'password'", async () => {
+    test("Update `password`", async () => {
       const createdUser = await orchestrator.createUser();
       await orchestrator.activateUser(createdUser);
-      const sessionObject = await orchestrator.createSession(createdUser.id);
+      const sessionObject = await orchestrator.createSession(createdUser);
 
       const response = await fetch(
         `${webserver.origin}/api/v1/users/${createdUser.username}`,
@@ -293,9 +296,7 @@ describe("PATCH api/v1/users/[username]", () => {
     test("With `update:user:others` targeting `defaultUser`", async () => {
       const privilegedUser = await orchestrator.createUser();
       await orchestrator.activateUser(privilegedUser);
-      const sessionObject1 = await orchestrator.createSession(
-        privilegedUser.id,
-      );
+      const sessionObject1 = await orchestrator.createSession(privilegedUser);
       await user.addFeatures(privilegedUser.id, ["update:user:others"]);
 
       const defaultUser = await orchestrator.createUser();
