@@ -18,8 +18,14 @@ body {
   position: absolute;
   width: 100vw;
   height: 100vh;
-  background: rgba(255 255 255 0);
-  backdrop-filter: blur(3px);
+  background: rgb(255 255 255 / 0.3); /* fallback sem blur */
+}
+
+@supports (backdrop-filter: blur(3px)) {
+  .BlurClass {
+    background: transparent;
+    backdrop-filter: blur(3px);
+  }
 }
 
 iframe {
@@ -39,15 +45,14 @@ iframe {
   padding: 15px;
   background-color: #f9f9f946;
   border-radius: 8px;
+}
 
-  & h6 {
-    font-size: 18px;
-    font-family: Monospace;
-    font-style: Monaco;
-    background-color: white;
-    border-radius: 8px;
-    padding: 5px;
-  }
+.counter-box h6 {
+  font-size: 18px;
+  font-family: "Monaco", monospace;
+  background-color: white;
+  border-radius: 8px;
+  padding: 5px;
 }
 
 .counter {

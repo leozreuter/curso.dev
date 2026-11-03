@@ -20,7 +20,16 @@
 }
 
 .blink {
-  animation: blinkEffect 0.5s ease-in-out; /* Duração e suavização da animação */
+  animation: blink 600ms;
+}
+
+@keyframes blink {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .counter-number {
