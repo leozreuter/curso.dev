@@ -1,0 +1,9 @@
+.smallContent {
+  max-width: 25rem;
+  margin-inline: auto;
+}
+
+.xsmallContent {
+  max-width: 15rem;
+  margin-inline: auto;
+}
