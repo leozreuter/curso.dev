@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { PageLayout, Header, Text } from "@primer/react";
+import { PageLayout, Header, Text, Stack } from "@primer/react";
 import styles from "./index.module.css";
 
 const contentWidthClasses = {
@@ -37,7 +37,9 @@ export default function DefaultLayout({
           {children}
         </PageLayout.Content>
         <PageLayout.Footer divider="line">
-          <Text size="small">© {new Date().getFullYear()} Marca </Text>
+          <Stack aling="center" justify="center" direction="horizontal">
+            <Text size="small">© {new Date().getFullYear()} Marca </Text>
+          </Stack>
         </PageLayout.Footer>
       </PageLayout>
     </>
