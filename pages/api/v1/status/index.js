@@ -36,7 +36,7 @@ async function getHandler(request, response) {
       database: {
         version: databaseVersionValue,
         max_connections: parseInt(databaseMaxConnectionsValue),
-        opend_connections: userConnectionsRows,
+        opened_connections: userConnectionsRows,
       },
     },
   };
