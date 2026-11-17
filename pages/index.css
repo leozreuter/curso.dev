@@ -1,114 +1,185 @@
+@import url("https://fonts.googleapis.com/css2?family=Chewy&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  padding: 0;
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(160deg, #fff0f5 0%, #ffe1ec 50%, #fbd3e9 100%);
+  color: #5a2a3d;
 }
 
 .App {
-  display: grid;
-  justify-items: center;
-  background-image: url(https://c4.wallpaperflare.com/wallpaper/906/1/261/holiday-valentine-s-day-couple-heart-love-hd-wallpaper-preview.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.BlurClass {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  background: rgb(255 255 255 / 0.3); /* fallback sem blur */
-}
-
-@supports (backdrop-filter: blur(3px)) {
-  .BlurClass {
-    background: transparent;
-    backdrop-filter: blur(3px);
-  }
-}
-
-iframe {
-  border: none;
-  height: 40vh;
-  width: 50vh;
-  z-index: 1;
-  border-radius: 50px;
-}
-
-.counter-box {
+  width: fit-content; /* acompanha a largura dos cards */
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 32px 20px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1vh;
-  width: 75vw;
-  margin: 5vh;
-  padding: 15px;
-  background-color: #f9f9f946;
-  border-radius: 8px;
-}
-
-.counter-box h6 {
-  font-size: 18px;
-  font-family: "Monaco", monospace;
-  background-color: white;
-  border-radius: 8px;
-  padding: 5px;
-}
-
-.counter {
-  animation-name: pisca;
-  animation-duration: 10s;
-  height: 50px;
-  min-width: 50px;
+  gap: 30px;
+  text-align: center;
 }
 
 .titulo {
-  text-align: center;
-  z-index: 1;
-  height: 30px;
-  font-size: 4vh;
+  font-family: "Chewy", system-ui;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  line-height: 1.2;
+  margin: 0;
+  color: #e0457b;
 }
 
-@keyframes pisca {
-  from {
-    background-color: black;
-  }
-  to {
-    background-color: #f9f9f9;
-  }
+.gif-wrap {
+  width: 340px;
+  max-width: 100%;
+  aspect-ratio: 1;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(224, 69, 123, 0.25);
+  border: 6px solid #fff;
+  animation: float 4s ease-in-out infinite;
 }
 
-@media (max-width: 700px) {
+.gif-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  pointer-events: none;
+}
+
+/* ---------- Contador ---------- */
+
+.counter {
+  width: 100%;
+  padding: 32px 24px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 40px rgba(181, 23, 158, 0.12);
+}
+
+.counter-label,
+.counter-footer {
+  font-family: "Chewy", system-ui;
+  font-size: 1.8rem;
+  color: #e0457b;
+  margin: 0 0 20px;
+}
+
+.counter-footer {
+  margin: 20px 0 0;
+  font-size: 1.4rem;
+}
+
+.counter-grid {
+  display: flex;
+  flex-wrap: nowrap; /* PC: tudo em uma linha */
+  justify-content: center;
+  gap: 14px;
+}
+
+.unit {
+  flex: 1 0 auto; /* cresce para o lado conforme o número */
+  min-width: 110px;
+  padding: 18px 20px;
+  background: #fff;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 14px rgba(224, 69, 123, 0.12);
+  transition: transform 0.2s;
+}
+
+.unit:hover {
+  transform: translateY(-4px);
+}
+
+.unit-value {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: #b5179e;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.unit-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #c47a96;
+}
+
+/* ---------- Botão ---------- */
+
+.toggle-btn {
+  margin-top: 1rem;
+  padding: 0.7rem 1.6rem;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f06292, #b5179e);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(181, 23, 158, 0.3);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease;
+}
+
+.toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(181, 23, 158, 0.4);
+  filter: brightness(1.05);
+}
+
+.toggle-btn:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: 0 4px 12px rgba(181, 23, 158, 0.3);
+}
+
+.toggle-btn:focus-visible {
+  outline: 3px solid #f8bbd0;
+  outline-offset: 3px;
+}
+
+/* ---------- Celular ---------- */
+
+@media (max-width: 640px) {
   .App {
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    overflow: visible;
-    gap: 1vh;
-    padding: 5px;
-    height: auto;
+    width: 100%;
   }
-  iframe {
-    height: 20vh;
-    width: 20vh;
+
+  .counter {
+    padding: 24px 14px;
   }
-  .titulo {
-    text-align: center;
-    height: 5vh;
-    font-size: 2.7vh;
+
+  .counter-grid {
+    flex-wrap: wrap; /* quebra para baixo */
   }
-  .counter-box {
-    flex-direction: column;
-    align-content: center;
-    height: auto;
-    margin-top: 10px;
+
+  .unit {
+    flex: 1 1 auto;
+    min-width: 90px;
+    padding: 14px 12px;
   }
-  .counter_counter__tlons {
-    min-width: 50vw;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
   }
-  h6 {
-    margin: 0;
+  50% {
+    transform: translateY(-10px);
   }
 }

@@ -89,7 +89,7 @@ function filterOutput(user, feature, resource) {
       dependecies: {
         database: {
           max_connections: db.max_connections,
-          opend_connections: db.opend_connections,
+          opened_connections: db.opened_connections,
         },
       },
     };
