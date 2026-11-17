@@ -23,6 +23,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@number-flow/react": "^0.6.2",
     "@primer/primitives": "11.9.0",
     "@primer/react": "38.32.0",
     "async-retry": "1.3.3",
